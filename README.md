@@ -6,17 +6,15 @@ peer voice and video chatting between two or more people.
 
 ### Server Side 
 This example uses node.js and socket.io to create a "Signaling Server", which
-runs on (or near) your webserver to manage who should talk to who. The purpose
+runs on (or near) your web server to manage who should talk to who. The purpose
 of the signaling server is to relay information between peers while you are
 setting them up to talk directly to each other.
 
 
 ### Client Side
-Included is `client.html` which, aside from jQuery and `adapter.js` (which just
-normalizes the WebRTC API until everything is standardized and de-prefixed),
-contains all of the logic to connect to the signaling server, join a virtual
-group chat channel, connect with peers, and stream video and audio to all party
-members.
+Included is `client.html` which contains all of the logic to connect to the
+signaling server, join a virtual group chat channel, connect with peers, and
+stream video and audio to all party members using the raw WebRTC API.
 
 
 Running
@@ -34,7 +32,7 @@ node signaling-server.js
 ```
 
 ### Web server
-You'll also probably want to host `client.html` on a webserver somewhere. You'll need
+You'll also probably want to host `client.html` on a web server somewhere. You'll need
 to edit `client.html` and change `YOURSERVERNAMEHERE` to be the hostname or IP of 
 the signaling server.
 
@@ -62,7 +60,7 @@ Using things other than jQuery, node.js, and socket.io
 =============================================
 The choice of node.js and socket.io is based purely on my familiarity with them
 and the fact that their fairly easy to understand even if you aren't familiar
-with them. However, you can use any mechanisms you want for this layer, you
+with them. However, you can use any mechanisms you want for your signaling system, you
 just need a way to exchange ICE candidates and session descriptions between
 clients.
 
@@ -71,3 +69,9 @@ manipulation, and we only do that to add and remove the <video>/<audio>
 elements in this demo. We don't use it at all for anything WebRTC specific in
 this example.
 
+Adapter.js
+==========
+You'll see `client.html` use `adapter.js`. This "library" just normalizes the
+WebRTC API, which will only be necessary while WebRTC is making its way through
+the standards process. Once everything is standardized and functions are
+de-prefixed in the browsers, this wont be necessary.
