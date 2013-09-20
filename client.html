@@ -140,7 +140,8 @@
                                     function() { console.log("Offer setLocalDescription succeeded"); },
                                     function() { Alert("Offer setLocalDescription failed!"); }
                                 );
-                                signaling_socket.emit('relaySessionDescription', {'peer_id': peer_id, 'session_description': local_description});
+                                signaling_socket.emit('relaySessionDescription', 
+                                    {'peer_id': peer_id, 'session_description': local_description});
                             },
                             function (error) {
                                 console.log("Error sending offer: ", error);
@@ -175,7 +176,8 @@
                                             function() { console.log("Answer setLocalDescription succeeded"); },
                                             function() { Alert("Answer setLocalDescription failed!"); }
                                         );
-                                        signaling_socket.emit('relaySessionDescription', {'peer_id': peer_id, 'session_description': local_description});
+                                        signaling_socket.emit('relaySessionDescription', 
+                                            {'peer_id': peer_id, 'session_description': local_description});
                                     },
                                     function(error) {
                                         console.log("Error creating answer: ", error);
@@ -264,6 +266,9 @@
         </script>
     </head>
     <body onload='init()'>
-        <!-- the <video> and <audio> tags are all added and removed dynamically in 'onAddStream', 'setup_local_media', and 'removePeer'/'disconnect' -->
+        <!-- 
+        the <video> and <audio> tags are all added and removed dynamically
+        in 'onAddStream', 'setup_local_media', and 'removePeer'/'disconnect'
+        -->
     </body>
 </html>
