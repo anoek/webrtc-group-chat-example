@@ -8,7 +8,8 @@
         <script src="https://webrtc.googlecode.com/svn/trunk/samples/js/base/adapter.js"></script>
         <style>
             html, body { 
-                background-color: #333; }
+                background-color: #333; 
+            }
             video {
                 width:  320px;
                 height:  240px;
@@ -119,9 +120,6 @@
                         $('body').append(remote_media);
                         attachMediaStream(remote_media[0], event.stream);
                     }
-                    peer_connection.onremovestream = function(event) {
-                        console.log("onRemoveStream", event);
-                    };
 
                     /* Add our local stream */
                     peer_connection.addStream(local_media_stream);
@@ -187,7 +185,6 @@
                         },
                         function(error) {
                             console.log("setRemoteDescription error: ", error);
-                            //peer.close();
                         }
                     );
                     console.log("Description Object: ", desc);
