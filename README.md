@@ -74,4 +74,4 @@ Adapter.js
 You'll see `client.html` use `adapter.js`. This "library" just normalizes the
 WebRTC API, which will only be necessary while WebRTC is making its way through
 the standards process. Once everything is standardized and functions are
-de-prefixed in the browsers, this wont be necessary.
+de-prefixed in the browsers, this won't be necessary anymore.
