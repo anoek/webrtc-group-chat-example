@@ -17,11 +17,10 @@
             }
         </style>
 
-        <!-- NOTE: Change the host here to your server! -->
-        <script src="http://YOURSERVERNAMEHERE:8080/socket.io/socket.io.js"></script>
+        <script src="/socket.io/socket.io.js"></script>
         <script>
             /** CONFIG **/
-            var SIGNALING_SERVER = "http://YOURSERVERNAMEHERE:8080/";
+            var SIGNALING_SERVER = "";
             var USE_AUDIO = true;
             var USE_VIDEO = true;
             var DEFAULT_CHANNEL = 'some-global-channel-name';
@@ -135,11 +134,13 @@
                             function (local_description) { 
                                 console.log("Local offer description is: ", local_description);
                                 peer_connection.setLocalDescription(local_description,
-                                    function() { console.log("Offer setLocalDescription succeeded"); },
+                                    function() { 
+                                        signaling_socket.emit('relaySessionDescription', 
+                                            {'peer_id': peer_id, 'session_description': local_description});
+                                        console.log("Offer setLocalDescription succeeded"); 
+                                    },
                                     function() { Alert("Offer setLocalDescription failed!"); }
                                 );
-                                signaling_socket.emit('relaySessionDescription', 
-                                    {'peer_id': peer_id, 'session_description': local_description});
                             },
                             function (error) {
                                 console.log("Error sending offer: ", error);
@@ -171,11 +172,13 @@
                                     function(local_description) {
                                         console.log("Answer description is: ", local_description);
                                         peer.setLocalDescription(local_description,
-                                            function() { console.log("Answer setLocalDescription succeeded"); },
+                                            function() { 
+                                                signaling_socket.emit('relaySessionDescription', 
+                                                    {'peer_id': peer_id, 'session_description': local_description});
+                                                console.log("Answer setLocalDescription succeeded");
+                                            },
                                             function() { Alert("Answer setLocalDescription failed!"); }
                                         );
-                                        signaling_socket.emit('relaySessionDescription', 
-                                            {'peer_id': peer_id, 'session_description': local_description});
                                     },
                                     function(error) {
                                         console.log("Error creating answer: ", error);

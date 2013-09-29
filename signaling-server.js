@@ -19,6 +19,10 @@ server.listen(PORT, null, function() {
 });
 main.use(express.bodyParser());
 
+main.get('/', function(req, res){ res.sendfile('newclient.html'); });
+main.get('/index.html', function(req, res){ res.sendfile('newclient.html'); });
+main.get('/client.html', function(req, res){ res.sendfile('newclient.html'); });
+
 
 
 /*************************/
