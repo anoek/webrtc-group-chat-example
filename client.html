@@ -5,7 +5,7 @@
         <!-- This adapter.js file de-prefixes the webkit* and moz* prefixed RTC
              methods. When RTC becomes a more solid standard, this adapter should no
              longer be necessary. -->
-        <script src="https://webrtc.googlecode.com/svn/trunk/samples/js/base/adapter.js"></script>
+        <!-- <script src="https://webrtc.googlecode.com/svn/trunk/samples/js/base/adapter.js"></script> -->
         <style>
             html, body { 
                 background-color: #333; 
@@ -17,10 +17,10 @@
             }
         </style>
 
-        <script src="/socket.io/socket.io.js"></script>
+        <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
         <script>
             /** CONFIG **/
-            var SIGNALING_SERVER = "";
+            var SIGNALING_SERVER = "http://localhost";
             var USE_AUDIO = true;
             var USE_VIDEO = true;
             var DEFAULT_CHANNEL = 'some-global-channel-name';
@@ -42,7 +42,8 @@
 
             function init() {
                 console.log("Connecting to signaling server");
-                signaling_socket = io.connect(SIGNALING_SERVER);
+                signaling_socket = io(SIGNALING_SERVER);
+                signaling_socket = io();
 
                 signaling_socket.on('connect', function() {
                     console.log("Connected to signaling server");
@@ -244,7 +245,19 @@
                 /* Ask user for permission to use the computers microphone and/or camera, 
                  * attach it to an <audio> or <video> tag if they give us access. */
                 console.log("Requesting access to local audio / video inputs");
-                getUserMedia({"audio":USE_AUDIO, "video":USE_VIDEO},
+
+
+                navigator.getUserMedia = ( navigator.getUserMedia ||
+                       navigator.webkitGetUserMedia ||
+                       navigator.mozGetUserMedia ||
+                       navigator.msGetUserMedia);
+
+                attachMediaStream = function(element, stream) {
+                    console.log('DEPRECATED, attachMediaStream will soon be removed.');
+                    element.srcObject = stream;
+                 };
+
+                navigator.getUserMedia({"audio":USE_AUDIO, "video":USE_VIDEO},
                     function(stream) { /* user accepted access to a/v */
                         console.log("Access granted to audio/video");
                         local_media_stream = stream;

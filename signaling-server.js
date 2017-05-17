@@ -9,19 +9,20 @@ var PORT = 8080;
 /*************/
 var express = require('express');
 var http = require('http');
+var bodyParser = require('body-parser')
 var main = express()
 var server = http.createServer(main)
 var io  = require('socket.io').listen(server);
-io.set('log level', 1);
+//io.set('log level', 2);
 
 server.listen(PORT, null, function() {
     console.log("Listening on port " + PORT);
 });
-main.use(express.bodyParser());
+//main.use(express.bodyParser());
 
-main.get('/', function(req, res){ res.sendfile('newclient.html'); });
-main.get('/index.html', function(req, res){ res.sendfile('newclient.html'); });
-main.get('/client.html', function(req, res){ res.sendfile('newclient.html'); });
+main.get('/', function(req, res){ res.sendFile(__dirname + '/client.html'); });
+// main.get('/index.html', function(req, res){ res.sendfile('newclient.html'); });
+// main.get('/client.html', function(req, res){ res.sendfile('newclient.html'); });
 
 
 
