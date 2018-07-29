@@ -2,7 +2,7 @@ About
 =====
 
 This is a "simple", but complete example of how to utilize WebRTC to do peer to
-peer voice and video chatting between two or more people.
+peer voice chatting between two or more people.
 
 ### Server Side 
 This example uses node.js and socket.io to create a "Signaling Server", which
@@ -14,7 +14,7 @@ setting them up to talk directly to each other.
 ### Client Side
 Included is `client.html` which contains all of the logic to connect to the
 signaling server, join a virtual group chat channel, connect with peers, and
-stream video and audio to all party members using the raw WebRTC API.
+stream audio to all party members using the raw WebRTC API.
 
 
 Running
@@ -23,7 +23,7 @@ Running
 ### Node.js signaling server
 You'll need to install `node.js` as well as the `express` and `socket.io` libraries:
 ```
-npm install -g socket.io express
+npm install
 ```
 
 Then simply run the signaling server:
@@ -33,12 +33,10 @@ node signaling-server.js
 
 ### Web server
 You'll also probably want to host `client.html` on a web server somewhere. You'll need
-to edit `client.html` and change `YOURSERVERNAMEHERE` to be the hostname or IP of 
-the signaling server.
+to edit `client.html` and change `YOUR_HTTPS_DOMAIN` and `SIGNALING_PORT` to be the hostname or IP of the signaling server.
 
-Note: you can also simply open the file locally instead of using a web server,
-but at the time of writing this only firefox will let you access the
-webcam/microphone from a file hosted off of your local machine.
+Note: you cannot file locally or AFAIK host signaling server and `client.html`
+on different hosts.
 
 
 ### Running the sample
@@ -53,7 +51,7 @@ Repeat with as many browsers as you dare.
 Note: At the time of writing this, only firefox and chrome support WebRTC,
 however both browsers support this on Windows, Linux, Mac, and Android, so lots
 of fun can be had pointing everyones' phones, tablets, and laptops at that `client.html`
-and bogging down your network with audio/video traffic.
+and bogging down your network with audio traffic.
 
 
 Using things other than jQuery, node.js, and socket.io
@@ -65,7 +63,7 @@ just need a way to exchange ICE candidates and session descriptions between
 clients.
 
 The use of jQuery is even less important, I just like using it for DOM
-manipulation, and we only do that to add and remove the <video>/<audio>
+manipulation, and we only do that to add and remove the <audio>
 elements in this demo. We don't use it at all for anything WebRTC specific in
 this example.
 
