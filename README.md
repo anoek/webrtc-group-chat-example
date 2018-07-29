@@ -48,7 +48,7 @@ node signaling-server.js
 
 ### Web server
 You'll also probably want to host `client.html` on a web server somewhere. You'll need
-to edit `client.html` and change `YOUR_HTTPS_DOMAIN` and `SIGNALING_PORT` to be the hostname or IP of the signaling server.
+to edit `client.html` and change `YOUR_HTTPS_DOMAIN` to be the hostname or IP of the signaling server.
 
 Note: you cannot file locally or AFAIK host signaling server and `client.html`
 on different hosts.
