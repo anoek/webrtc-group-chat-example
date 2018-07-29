@@ -1,17 +1,24 @@
 /**************/
 /*** CONFIG ***/
 /**************/
-var PORT = 8080;
-
+var PORT = 8080
+var KEY = SSL_KEY_PATH
+var CERT = SSL_CERT_PATH
 
 /*************/
 /*** SETUP ***/
 /*************/
+var fs = require('fs');
+var server_options = {
+  key: fs.readFileSync(KEY),
+  cert: fs.readFileSync(CERT)
+}
+
 var express = require('express');
-var http = require('http');
+var https = require('https');
 var bodyParser = require('body-parser')
 var main = express()
-var server = http.createServer(main)
+var server = https.createServer(server_options, main)
 var io  = require('socket.io').listen(server);
 //io.set('log level', 2);
 
