@@ -41,7 +41,10 @@ You'll need to install `node.js` as well as the `express` and `socket.io` librar
 npm install
 ```
 
-Then simply run the signaling server:
+Then change in `signaling-server.js` variables `SSL_KEY_PATH` and `SSL_CERT_PATH`
+to the full path to key and certificate of domain you are hosting this demo on.
+
+And then simply run the signaling server:
 ```
 node signaling-server.js
 ```
