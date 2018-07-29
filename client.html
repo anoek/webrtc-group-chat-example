@@ -256,7 +256,7 @@
                     element.srcObject = stream;
                  };
 
-                navigator.getUserMedia({"audio":USE_AUDIO, "video":USE_VIDEO},
+                navigator.getUserMedia({"audio": { echoCancellation: true }, "video":USE_VIDEO},
                     function(stream) { /* user accepted access to a/v */
                         console.log("Access granted to audio/video");
                         local_media_stream = stream;
