@@ -2,8 +2,8 @@ About this fork
 =====
 
 This fork is intended for use only with audio so video support was removed
-because I have no intentions to test and support it. Also I don't have
-a webcam.
+because I have no intentions to test and support it. ~~Also I don't have
+a webcam.~~
 
 Second, HTTPS support was added because without it this demo was working for
 Firefox users only (which allows `getUserMedia` for insecure hosts). Now support
