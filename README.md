@@ -13,6 +13,9 @@ domain.
 
 3rd, some issues were fixed (but some deprecation issues are still there).
 
+PS: hosting slightly modified version of this with channels support.
+feel free to explore: https://ham.ayeaye.ae
+
 About
 =====
 
