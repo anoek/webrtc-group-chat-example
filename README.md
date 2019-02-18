@@ -1,8 +1,26 @@
+About this fork
+=====
+
+This fork is intended for use only with audio so video support was removed
+because I have no intentions to test and support it. ~~Also I don't have
+a webcam.~~
+
+Second, HTTPS support was added because without it this demo was working for
+Firefox users only (which allows `getUserMedia` for insecure hosts). Now support
+should be much broader, tested Chrome and Firefox on Mac, Chrome on Android.
+From now on `client.html` and signaling server should be hosted on SSL enabled
+domain.
+
+3rd, some issues were fixed (but some deprecation issues are still there).
+
+PS: hosting slightly modified version of this with channels support.
+feel free to explore: https://ham.ayeaye.ae
+
 About
 =====
 
 This is a "simple", but complete example of how to utilize WebRTC to do peer to
-peer voice and video chatting between two or more people.
+peer voice chatting between two or more people.
 
 ### Server Side 
 This example uses node.js and socket.io to create a "Signaling Server", which
@@ -14,7 +32,7 @@ setting them up to talk directly to each other.
 ### Client Side
 Included is `client.html` which contains all of the logic to connect to the
 signaling server, join a virtual group chat channel, connect with peers, and
-stream video and audio to all party members using the raw WebRTC API.
+stream audio to all party members using the raw WebRTC API.
 
 
 Running
@@ -23,22 +41,23 @@ Running
 ### Node.js signaling server
 You'll need to install `node.js` as well as the `express` and `socket.io` libraries:
 ```
-npm install -g socket.io express
+npm install
 ```
 
-Then simply run the signaling server:
+Then change in `signaling-server.js` variables `SSL_KEY_PATH` and `SSL_CERT_PATH`
+to the full path to key and certificate of domain you are hosting this demo on.
+
+And then simply run the signaling server:
 ```
 node signaling-server.js
 ```
 
 ### Web server
 You'll also probably want to host `client.html` on a web server somewhere. You'll need
-to edit `client.html` and change `YOURSERVERNAMEHERE` to be the hostname or IP of 
-the signaling server.
+to edit `client.html` and change `YOUR_HTTPS_DOMAIN` to be the hostname or IP of the signaling server.
 
-Note: you can also simply open the file locally instead of using a web server,
-but at the time of writing this only firefox will let you access the
-webcam/microphone from a file hosted off of your local machine.
+Note: you cannot file locally or AFAIK host signaling server and `client.html`
+on different hosts.
 
 
 ### Running the sample
@@ -53,7 +72,7 @@ Repeat with as many browsers as you dare.
 Note: At the time of writing this, only firefox and chrome support WebRTC,
 however both browsers support this on Windows, Linux, Mac, and Android, so lots
 of fun can be had pointing everyones' phones, tablets, and laptops at that `client.html`
-and bogging down your network with audio/video traffic.
+and bogging down your network with audio traffic.
 
 
 Using things other than jQuery, node.js, and socket.io
@@ -65,7 +84,7 @@ just need a way to exchange ICE candidates and session descriptions between
 clients.
 
 The use of jQuery is even less important, I just like using it for DOM
-manipulation, and we only do that to add and remove the <video>/<audio>
+manipulation, and we only do that to add and remove the <audio>
 elements in this demo. We don't use it at all for anything WebRTC specific in
 this example.
 

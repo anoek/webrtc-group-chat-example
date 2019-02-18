@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
     <head>
-        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
         <!-- This adapter.js file de-prefixes the webkit* and moz* prefixed RTC
              methods. When RTC becomes a more solid standard, this adapter should no
              longer be necessary. -->
@@ -10,26 +10,19 @@
             html, body { 
                 background-color: #333; 
             }
-            video {
-                width:  320px;
-                height:  240px;
-                border:  1px solid black;
-            }
         </style>
 
         <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
         <script>
             /** CONFIG **/
-            var SIGNALING_SERVER = "http://localhost";
-            var USE_AUDIO = true;
-            var USE_VIDEO = true;
+            var SIGNALING_SERVER = "YOUR_HTTPS_DOMAIN:8080";
             var DEFAULT_CHANNEL = 'some-global-channel-name';
             var MUTE_AUDIO_BY_DEFAULT = false;
 
             /** You should probably use a different stun server doing commercial stuff **/
             /** Also see: https://gist.github.com/zziuni/3741933 **/
             var ICE_SERVERS = [
-                {url:"stun:stun.l.google.com:19302"}
+                {urls:"stun:stun.l.google.com:19302"}
             ];
         </script>
 
@@ -38,12 +31,11 @@
             var signaling_socket = null;   /* our socket.io connection to our webserver */
             var local_media_stream = null; /* our own microphone / webcam */
             var peers = {};                /* keep track of our peer connections, indexed by peer_id (aka socket.io id) */
-            var peer_media_elements = {};  /* keep track of our <video>/<audio> tags, indexed by peer_id */
+            var peer_media_elements = {};  /* keep track of our <audio> tags, indexed by peer_id */
 
             function init() {
                 console.log("Connecting to signaling server");
                 signaling_socket = io(SIGNALING_SERVER);
-                signaling_socket = io();
 
                 signaling_socket.on('connect', function() {
                     console.log("Connected to signaling server");
@@ -110,7 +102,7 @@
                     }
                     peer_connection.onaddstream = function(event) {
                         console.log("onAddStream", event);
-                        var remote_media = USE_VIDEO ? $("<video>") : $("<audio>");
+                        var remote_media = $("<audio>");
                         remote_media.attr("autoplay", "autoplay");
                         if (MUTE_AUDIO_BY_DEFAULT) {
                             remote_media.attr("muted", "true");
@@ -152,7 +144,7 @@
 
                 /** 
                  * Peers exchange session descriptions which contains information
-                 * about their audio / video settings and that sort of stuff. First
+                 * about their audio settings and that sort of stuff. First
                  * the 'offerer' sends a description to the 'answerer' (with type
                  * "offer"), then the answerer sends one back (with type "answer").  
                  */
@@ -243,8 +235,8 @@
                     return; 
                 }
                 /* Ask user for permission to use the computers microphone and/or camera, 
-                 * attach it to an <audio> or <video> tag if they give us access. */
-                console.log("Requesting access to local audio / video inputs");
+                 * attach it to an <audio> tag if they give us access. */
+                console.log("Requesting access to local audio inputs");
 
 
                 navigator.getUserMedia = ( navigator.getUserMedia ||
@@ -257,21 +249,24 @@
                     element.srcObject = stream;
                  };
 
-                navigator.getUserMedia({"audio":USE_AUDIO, "video":USE_VIDEO},
+                navigator.getUserMedia({"audio": { echoCancellation: true }, "video": false },
                     function(stream) { /* user accepted access to a/v */
-                        console.log("Access granted to audio/video");
+                        console.log("Access granted to audio");
                         local_media_stream = stream;
-                        var local_media = USE_VIDEO ? $("<video>") : $("<audio>");
+                        var local_media = $("<audio>");
                         local_media.attr("autoplay", "autoplay");
-                        local_media.attr("muted", "true"); /* always mute ourselves by default */
+
+                        //local_media.attr("muted", "true"); /* always mute ourselves by default. but not taking effect here */
+
                         local_media.attr("controls", "");
                         $('body').append(local_media);
                         attachMediaStream(local_media[0], stream);
+                        local_media[0].muted = true
 
                         if (callback) callback();
                     },
                     function() { /* user denied access to a/v */
-                        console.log("Access denied for audio/video");
+                        console.log("Access denied for audio");
                         alert("You chose not to provide access to the camera/microphone, demo will not work.");
                         if (errorback) errorback();
                     });
@@ -280,7 +275,7 @@
     </head>
     <body onload='init()'>
         <!-- 
-        the <video> and <audio> tags are all added and removed dynamically
+        the <audio> tags are all added and removed dynamically
         in 'onAddStream', 'setup_local_media', and 'removePeer'/'disconnect'
         -->
     </body>
