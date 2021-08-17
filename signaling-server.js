@@ -1,18 +1,29 @@
 /**************/
 /*** CONFIG ***/
 /**************/
-var PORT = 8080;
+const PORT = 8080;
 
 
 /*************/
 /*** SETUP ***/
 /*************/
-var express = require('express');
-var http = require('http');
-var bodyParser = require('body-parser')
-var main = express()
-var server = http.createServer(main)
-var io  = require('socket.io').listen(server);
+const fs = require("fs");
+const express = require('express');
+//var http = require('http');
+const https = require("https");
+const bodyParser = require('body-parser')
+const main = express()
+//const server = http.createServer(main)
+
+
+let privateKey, certificate;
+
+privateKey = fs.readFileSync("ssl/server-key.pem", "utf8");
+certificate = fs.readFileSync("ssl/server-cert.pem", "utf8");
+const credentials = { key: privateKey, cert: certificate };
+const server = https.createServer(credentials, main);
+
+const io  = require('socket.io').listen(server);
 //io.set('log level', 2);
 
 server.listen(PORT, null, function() {
