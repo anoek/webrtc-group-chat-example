@@ -9,29 +9,28 @@ const PORT = 8080;
 /*************/
 const fs = require("fs");
 const express = require('express');
-//var http = require('http');
-const https = require("https");
+const http = require('http');
+//const https = require("https");
 const bodyParser = require('body-parser')
-const main = express()
-//const server = http.createServer(main)
 
-
-let privateKey, certificate;
-
-privateKey = fs.readFileSync("ssl/server-key.pem", "utf8");
-certificate = fs.readFileSync("ssl/server-cert.pem", "utf8");
-const credentials = { key: privateKey, cert: certificate };
-const server = https.createServer(credentials, main);
-
-const io  = require('socket.io').listen(server);
+const socketIO  = require('socket.io');
 //io.set('log level', 2);
+let app = express();
+let server = http.createServer(app);
 
-server.listen(PORT, null, function() {
-    console.log("Listening on port " + PORT);
+let io = socketIO(server,{
+    maxHttpBufferSize: 1e8, pingTimeout: 60000,
+    async_handlers: true
 });
-//main.use(express.bodyParser());
 
-main.get('/', function(req, res){ res.sendFile(__dirname + '/client.html'); });
+let callSocket = io.of('/calls');
+
+app.use(express.static(__dirname));
+
+app.get('/', function(req, res){ 
+    console.log('got req');
+    res.sendFile(__dirname + '/client.html'); 
+});
 // main.get('/index.html', function(req, res){ res.sendfile('newclient.html'); });
 // main.get('/client.html', function(req, res){ res.sendfile('newclient.html'); });
 
@@ -53,7 +52,8 @@ var sockets = {};
  * information. After all of that happens, they'll finally be able to complete
  * the peer connection and will be streaming audio/video between eachother.
  */
-io.sockets.on('connection', function (socket) {
+callSocket.on('connection', function (socket) {
+    console.log(socket.channels);
     socket.channels = {};
     sockets[socket.id] = socket;
 
@@ -127,4 +127,9 @@ io.sockets.on('connection', function (socket) {
             sockets[peer_id].emit('sessionDescription', {'peer_id': socket.id, 'session_description': session_description});
         }
     });
+});
+
+
+server.listen(PORT, null, function() {
+    console.log("Listening on port " + PORT);
 });
