@@ -1,7 +1,7 @@
 {
-  "name": "",
-  "version": "",
-  "description": "About =====",
+  "name": "WebRTC Group chat",
+  "version": "0.0.1",
+  "description": "",
   "scripts": {
     "start": "node signaling-server"
   },
